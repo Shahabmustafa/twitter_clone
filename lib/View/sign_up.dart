@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Utls/flutter_toest.dart';
+import 'package:twitter_clone/View/Home_Screen.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -21,149 +23,169 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController password = TextEditingController();
   final TextEditingController c_password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
+
+  void SignUp()async{
+    await _auth.createUserWithEmailAndPassword(
+      email: email.text.toString(),
+      password: password.text.toString(),
+    ).then((value){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Utls.toastMessage(value.user!.email.toString());
+      print(value.user!.email.toString());
+    }).onError((error, stackTrace){
+      print(error.toString());
+      Utls.toastMessage(error.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: Image.asset('images/twitter.png',width: 100.0,height: 100.0,)),
-              TextFormField(
-                validator: (name){
-                  if(name!.isEmpty){
-                    return 'Please Enter Your Email';
-                  }
-                },
-                controller: name,
-                decoration: const InputDecoration(
-                  label: Text('Name'),
-                  hintText: 'Name',
-                  prefixIcon: Icon(Icons.person),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 150.0,
                 ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              TextFormField(
-                validator: (phone){
-                  if(phone!.isEmpty){
-                    return 'Enter Your Phone Number';
-                  }else if(phone.length < 11){
-                    return 'Valid Phone Number';
-                  }
-                },
-                controller: phone,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                    label: Text('Phone'),
-                    hintText: 'Phone',
-                  prefixIcon: Icon(Icons.phone),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              TextFormField(
-                validator: (email){
-                  if(email!.isEmpty){
-                    return 'Please Enter Your Email';
-                  }else if(!regExp.hasMatch(email)){
-                    return 'Please Enter Your Valid Email';
-                  }
-                },
-                controller: email,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                    label: Text('Email Address'),
-                    hintText: 'Email Address',
-                    prefixIcon: Icon(Icons.alternate_email),
-              ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              ValueListenableBuilder(
-                  valueListenable: _obsecurePassword,
-                  builder: (context,value,child){
-                    return TextFormField(
-                      validator: (password){
-                        if(password!.isEmpty){
-                          return 'Please inter Your Password';
-                        }else if(password.length < 6){
-                          return 'Please Minimum Six Digits Password';
-                        }else{
-                          return null;
-                        }
-                      },
-                      obscureText: _obsecurePassword.value,
-                      controller: password,
-                      decoration: InputDecoration(
-                          label: Text('Passeord'),
-                          prefixIcon: Icon(Icons.password),
-                          suffixIcon: InkWell(
-                            onTap: (){
-                              _obsecurePassword.value =! _obsecurePassword.value;
-                            },
-                              child: Icon(
-                                  _obsecurePassword.value ?
-                                  Icons.visibility_off :
-                                  Icons.visibility
-                              ),
-                          ),
-                          hintText: 'Password'
-                      ),
-                    );
-                  }
-                  ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              ValueListenableBuilder(
-                  valueListenable: _obsecureConfirmePassword,
-                  builder: (context,value,child){
-                    return TextFormField(
-                      validator: (c_password){
-                        if(c_password!.isEmpty){
-                          return 'Please Inter Your Confirm Password';
-                        }else if(c_password.length < 6){
-                          return 'Please Minimum Six Digits Password';
-                        }else{
-                          return null;
-                        }
-                      },
-                      obscureText: _obsecureConfirmePassword.value,
-                      controller: c_password,
-                      decoration: InputDecoration(
-                          label: Text('Confirm Passeord'),
-                          prefixIcon: Icon(Icons.password),
-                          suffixIcon: InkWell(
-                            onTap: (){
-                              _obsecureConfirmePassword.value =! _obsecureConfirmePassword.value;
-                            },
-                            child: Icon(
-                              _obsecureConfirmePassword.value ? Icons.visibility_off :
-                                Icons.visibility),
-                          ),
-                          hintText: 'Confirm Password'
-                      ),
-                    );
-                  }),
-              const SizedBox(
-                height: 30.0,
-              ),
-              CreateButton(
-                  title: 'Create account',
-                  onPress: (){
-                    if(_formKey.currentState!.validate()){
-
+                Center(child: Image.asset('images/twitter.png',width: 100.0,height: 100.0,)),
+                TextFormField(
+                  validator: (name){
+                    if(name!.isEmpty){
+                      return 'Please Enter Your Email';
                     }
-              }),
-            ],
+                  },
+                  controller: name,
+                  decoration: const InputDecoration(
+                    label: Text('Name'),
+                    hintText: 'Name',
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                TextFormField(
+                  validator: (phone){
+                    if(phone!.isEmpty){
+                      return 'Enter Your Phone Number';
+                    }else if(phone.length < 11){
+                      return 'Valid Phone Number';
+                    }
+                  },
+                  controller: phone,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                      label: Text('Phone'),
+                      hintText: 'Phone',
+                    prefixIcon: Icon(Icons.phone),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                TextFormField(
+                  validator: (email){
+                    if(email!.isEmpty){
+                      return 'Please Enter Your Email';
+                    }else if(!regExp.hasMatch(email)){
+                      return 'Please Enter Your Valid Email';
+                    }
+                  },
+                  controller: email,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                      label: Text('Email Address'),
+                      hintText: 'Email Address',
+                      prefixIcon: Icon(Icons.alternate_email),
+                ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _obsecurePassword,
+                    builder: (context,value,child){
+                      return TextFormField(
+                        validator: (password){
+                          if(password!.isEmpty){
+                            return 'Please inter Your Password';
+                          }else if(password.length < 6){
+                            return 'Please Minimum Six Digits Password';
+                          }else{
+                            return null;
+                          }
+                        },
+                        obscureText: _obsecurePassword.value,
+                        controller: password,
+                        decoration: InputDecoration(
+                            label: Text('Passeord'),
+                            prefixIcon: Icon(Icons.password),
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                _obsecurePassword.value =! _obsecurePassword.value;
+                              },
+                                child: Icon(
+                                    _obsecurePassword.value ?
+                                    Icons.visibility_off :
+                                    Icons.visibility
+                                ),
+                            ),
+                            hintText: 'Password'
+                        ),
+                      );
+                    }
+                    ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _obsecureConfirmePassword,
+                    builder: (context,value,child){
+                      return TextFormField(
+                        validator: (c_password){
+                          if(c_password!.isEmpty){
+                            return 'Please Inter Your Confirm Password';
+                          }else if(c_password.length < 6){
+                            return 'Please Minimum Six Digits Password';
+                          }else{
+                            return null;
+                          }
+                        },
+                        obscureText: _obsecureConfirmePassword.value,
+                        controller: c_password,
+                        decoration: InputDecoration(
+                            label: Text('Confirm Passeord'),
+                            prefixIcon: Icon(Icons.password),
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                _obsecureConfirmePassword.value =! _obsecureConfirmePassword.value;
+                              },
+                              child: Icon(
+                                _obsecureConfirmePassword.value ? Icons.visibility_off :
+                                  Icons.visibility),
+                            ),
+                            hintText: 'Confirm Password'
+                        ),
+                      );
+                    }),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                CreateButton(
+                    title: 'Create account',
+                    onPress: ()async{
+                      if(_formKey.currentState!.validate()){
+                        SignUp();
+                      }
+                }),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,11 +1,10 @@
-import 'dart:ffi';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/Utls/flutter_toest.dart';
 import 'package:twitter_clone/Utls/text_style.dart';
+import 'package:twitter_clone/View/Home_Screen.dart';
 import 'package:twitter_clone/View/sign_up.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
-
-import '../Utls/flutter_toest.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   ValueNotifier<bool> _obesurePassword = ValueNotifier<bool>(true);
   final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
                    ),
                    CreateButton(
                        title: 'Log in',
-                       onPress: (){
+                       onPress: ()async{
                          if(_formKey.currentState!.validate()){
-
+                           await _auth.signInWithEmailAndPassword(
+                             email: email.text.toString(),
+                             password: password.text.toString(),
+                           ).then((value){
+                             // if(value.user!.email != null){
+                             // }else{
+                             //   Utls.flushBarErrorMessage('User have Email is not Correct Login ', context);
+                             // }
+                             Navigator.push(context, MaterialPageRoute(builder:(context) => HomePage()));
+                             Utls.flushBarErrorMessage('User have Succesfully Login ${value.user!.email}', context);
+                             print(value.user!.email);
+                           }).onError((error, stackTrace){
+                             Utls.flushBarErrorMessage('${error.toString()}', context);
+                             print(error.toString());
+                           });
                          }
                        }
                    ),
