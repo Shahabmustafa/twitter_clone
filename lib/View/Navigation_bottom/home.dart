@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
-import 'package:twitter_clone/Widgets/icon_widget.dart';
 import 'package:twitter_clone/Widgets/post_share.dart';
-import 'package:twitter_clone/Widgets/social_button.dart';
 
 class HomeNavigationBottom extends StatefulWidget {
   const HomeNavigationBottom({Key? key}) : super(key: key);
@@ -23,8 +21,8 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
               child: PostShare(),
             ),
             for(int i = 0; i<6; i++)

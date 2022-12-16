@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/View/Drawer/profile_screen.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({Key? key}) : super(key: key);
@@ -13,16 +14,16 @@ class _DrawerPageState extends State<DrawerPage> {
     return Drawer(
       child: ListView(
         children: [
-          CircleAvatar(),
-          UserAccountsDrawerHeader(
+          const UserAccountsDrawerHeader(
             accountName:Text( 'Shahab Mustafa'),
             accountEmail: Text('shahabmustafa57@gmail.com'),
           ),
+          CircleAvatar(),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: (){
-
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen() ));
             },
           ),
           ListTile(
