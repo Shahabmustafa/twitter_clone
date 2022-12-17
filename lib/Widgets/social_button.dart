@@ -102,9 +102,7 @@ class TwitterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-
-      },
+      onTap: onTap,
       child: Container(
         width: 120.0,
         height: 40.0,

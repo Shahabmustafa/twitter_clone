@@ -6,6 +6,8 @@ import 'package:twitter_clone/View/Home_Screen.dart';
 import 'package:twitter_clone/View/sign_up.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
+import 'google_sign_in.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -143,8 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
                    ),
                    SocialButton(
                        imageUrl: 'images/google.png',
-                       onPress: (){
-                         print('Click Google');
+                       onPress: ()async{
+                        await signInWithGoogle();
                        },
                        title: 'Continue with Google'),
                    const SizedBox(

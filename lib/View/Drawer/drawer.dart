@@ -28,7 +28,7 @@ class _DrawerPageState extends State<DrawerPage> {
           ),
           ListTile(
             leading: Icon(Icons.featured_play_list_sharp),
-            title: Text('Profile'),
+            title: Text('Lists'),
             onTap: (){
 
             },

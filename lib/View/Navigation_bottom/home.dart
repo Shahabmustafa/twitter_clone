@@ -10,7 +10,7 @@ class HomeNavigationBottom extends StatefulWidget {
 }
 
 class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
-  var time = DateTime.now();
+  // var time = DateTime.now();
   bool _iscomment = false;
   bool _islike = false;
   bool _retwitte = false;

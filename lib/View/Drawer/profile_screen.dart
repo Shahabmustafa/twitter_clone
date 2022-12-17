@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/View/Drawer/edit_profile.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
 import '../../Utls/app_colors.dart';
@@ -51,7 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TwitterButton(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                        print('click');
+                      },
                       title: 'Edit Profile'
                   ),
                   const SizedBox(
