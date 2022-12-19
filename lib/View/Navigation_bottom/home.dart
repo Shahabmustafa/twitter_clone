@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
 import 'package:twitter_clone/Widgets/post_share.dart';
@@ -11,6 +12,7 @@ class HomeNavigationBottom extends StatefulWidget {
 
 class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
   // var time = DateTime.now();
+  final _auth = FirebaseAuth.instance.currentUser;
   bool _iscomment = false;
   bool _islike = false;
   bool _retwitte = false;
@@ -33,7 +35,7 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
                   Row(
                     children: [
                       CircleAvatar(
-                        child: Image.asset('images/google.png',),
+                        backgroundImage: NetworkImage("${_auth!.photoURL}"),
                       ),
                       SizedBox(
                         width: 5.0,
@@ -41,7 +43,7 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
                       Row(
                             children:[
                               Text(
-                                    'Shahab Mustafa'
+                                    "${_auth!.displayName}"
                                     ,style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,

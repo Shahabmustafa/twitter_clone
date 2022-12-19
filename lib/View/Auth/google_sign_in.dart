@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 String? email = "";
 String? displayName = "";
+String? photoURL = "";
 
 Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
@@ -18,6 +19,8 @@ Future<UserCredential> signInWithGoogle() async {
   );
   email = googleUser!.email;
   displayName = googleUser.displayName;
+  photoURL = googleUser.photoUrl;
+
   print(email);
   print(displayName);
   // Once signed in, return the UserCredential

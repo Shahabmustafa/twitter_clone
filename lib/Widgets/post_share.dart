@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
@@ -11,6 +12,8 @@ class PostShare extends StatefulWidget {
 }
 
 class _PostShareState extends State<PostShare> {
+  final _auth = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,6 +22,7 @@ class _PostShareState extends State<PostShare> {
           children: [
             CircleAvatar(
               radius: 25.0,
+              backgroundImage: NetworkImage("${_auth!.photoURL}"),
             ),
             SizedBox(
               width: 10.0,

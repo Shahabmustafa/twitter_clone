@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/View/Auth/google_sign_in.dart';
 import 'package:twitter_clone/View/Drawer/edit_profile.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
@@ -12,6 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final _auth = FirebaseAuth.instance.currentUser;
   bool _iscomment = false;
   bool _islike = false;
   bool _retwitte = false;
@@ -20,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Name'),
+        title: Text("${_auth!.displayName}"),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -38,7 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     left: 10.0,
                     bottom: -50.0,
                     child: Container(
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage("${_auth!.photoURL}"),
                         radius: 50.0,
                       ),
                     ),
@@ -54,7 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   TwitterButton(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
-                        print('click');
                       },
                       title: 'Edit Profile'
                   ),
@@ -67,11 +70,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       SizedBox(
                         width: 10.0,
                       ),
-                      Text('User Name',
+                      Text('${_auth!.displayName}',
                         style: TextStyle(
                             fontSize: 25.0,
                             fontWeight: FontWeight.bold,
@@ -113,15 +116,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Row(
                           children: [
                             CircleAvatar(
-                              child: Image.asset('images/google.png',),
+                              backgroundImage: NetworkImage("${_auth!.photoURL}"),
                             ),
                             const SizedBox(
                               width: 5.0,
                             ),
                             Row(
-                              children:const [
+                              children: [
                                 Text(
-                                  'User Name'
+                                  '${_auth!.displayName}'
                                   ,style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15.0,

@@ -147,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                        imageUrl: 'images/google.png',
                        onPress: ()async{
                         await signInWithGoogle();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                        },
                        title: 'Continue with Google'),
                    const SizedBox(

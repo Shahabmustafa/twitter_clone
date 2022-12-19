@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/View/Auth/Login_screen.dart';
 import 'package:twitter_clone/View/Drawer/profile_screen.dart';
 
 class DrawerPage extends StatefulWidget {
@@ -9,16 +11,20 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
+  final _auth = FirebaseAuth.instance;
+  final _authUser = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
-          const UserAccountsDrawerHeader(
-            accountName:Text( 'Shahab Mustafa'),
-            accountEmail: Text('shahabmustafa57@gmail.com'),
+           UserAccountsDrawerHeader(
+             currentAccountPicture: CircleAvatar(
+               backgroundImage: NetworkImage("${_authUser!.photoURL}"),
+             ),
+            accountName:Text( '${_authUser!.displayName}'),
+            accountEmail: Text('${_authUser!.email}'),
           ),
-          CircleAvatar(),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
@@ -30,7 +36,14 @@ class _DrawerPageState extends State<DrawerPage> {
             leading: Icon(Icons.featured_play_list_sharp),
             title: Text('Lists'),
             onTap: (){
-
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Sign Out'),
+            onTap: ()async{
+              await _auth.signOut();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
         ],
