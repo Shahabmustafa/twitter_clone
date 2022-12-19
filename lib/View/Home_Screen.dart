@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
 import 'package:twitter_clone/View/Drawer/drawer.dart';
@@ -14,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _auth = FirebaseAuth.instance.currentUser;
   @override
   int _currentIndex = 0;
   List<Widget> bottomNavigation = [

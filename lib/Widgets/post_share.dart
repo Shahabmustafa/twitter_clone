@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/Widgets/image_update.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
 import 'icon_widget.dart';
@@ -53,7 +54,9 @@ class _PostShareState extends State<PostShare> {
             Row(
               children: [
                 IconWidget(
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUpdate()));
+                  },
                   icon: Icons.photo,
                 ),
                 SizedBox(

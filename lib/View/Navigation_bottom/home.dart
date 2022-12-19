@@ -41,15 +41,8 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
                         width: 5.0,
                       ),
                       Row(
-                            children:[
-                              Text(
-                                    "${_auth!.displayName}"
-                                    ,style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                  ),
-                              Icon(Icons.verified,color: AppColor.BlueColor,),
+                        children:[Text("${_auth!.displayName}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0,),),
+                          Icon(Icons.verified,color: AppColor.BlueColor,),
                             ],
                           ),
                     ],
