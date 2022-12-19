@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:twitter_clone/Utls/flutter_toest.dart';
 import 'package:twitter_clone/Utls/text_style.dart';
 import 'package:twitter_clone/View/Home_Screen.dart';
-import 'package:twitter_clone/View/sign_up.dart';
+import 'package:twitter_clone/View/Auth/sign_up.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
 
 import 'google_sign_in.dart';
@@ -149,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         await signInWithGoogle();
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                        },
-                       title: 'Continue with Google'),
+                       title: 'Continue with Google',
+                   ),
                    const SizedBox(
                      height: 20.0,
                    ),

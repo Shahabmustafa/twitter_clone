@@ -43,6 +43,8 @@ dependencies:
   another_flushbar: ^1.12.29
   image_picker: ^0.8.6
   google_sign_in: ^5.4.2
+  cloud_firestore: ^4.2.0
+  firebase_storage: ^11.0.8
 
 dev_dependencies:
   flutter_test:

@@ -31,11 +31,11 @@ class _SignUpState extends State<SignUp> {
       password: password.text.toString(),
     ).then((value){
       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-      Utls.toastMessage(value.user!.email.toString());
+      Utls.flushBarErrorMessage(value.user!.email.toString(), context);
       print(value.user!.email.toString());
     }).onError((error, stackTrace){
       print(error.toString());
-      Utls.toastMessage(error.toString());
+      Utls.flushBarErrorMessage(error.toString(), context);
     });
   }
 
@@ -53,7 +53,12 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 150.0,
                 ),
-                Center(child: Image.asset('images/twitter.png',width: 100.0,height: 100.0,)),
+                Center(
+                    child: Image.asset('images/twitter.png',
+                      width: 100.0,
+                      height: 100.0,
+                    ),
+                ),
                 TextFormField(
                   validator: (name){
                     if(name!.isEmpty){
