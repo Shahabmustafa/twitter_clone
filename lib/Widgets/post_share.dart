@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/Widgets/image_update.dart';
@@ -25,7 +26,7 @@ class _PostShareState extends State<PostShare> {
               radius: 25.0,
               backgroundImage: NetworkImage("${_auth!.photoURL}"),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10.0,
             ),
             RoundButton(title: 'Everyone',
@@ -34,18 +35,18 @@ class _PostShareState extends State<PostShare> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         TextFormField(
-          style: TextStyle(
+          style: const TextStyle(
             height: 1.5,
           ),
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
               hintText: "What's Happening?"
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         Row(
@@ -59,28 +60,28 @@ class _PostShareState extends State<PostShare> {
                   },
                   icon: Icons.photo,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 IconWidget(
                   onTap: (){},
                   icon: Icons.gif_box_outlined,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 IconWidget(
                   onTap: (){},
                   icon: Icons.poll,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 IconWidget(
                   onTap: (){},
                   icon: Icons.emoji_emotions_outlined,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 IconWidget(

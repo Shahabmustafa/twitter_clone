@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter_clone/Widgets/social_button.dart';
@@ -12,7 +14,10 @@ class ImageUpdate extends StatefulWidget {
 
 class _ImageUpdateState extends State<ImageUpdate> {
   final ImagePicker _imagePicker = ImagePicker();
+  final TextEditingController _searchPostController = TextEditingController();
   File? UploadImage;
+  String URL = "";
+
   getImage()async{
     var image = await _imagePicker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -20,7 +25,15 @@ class _ImageUpdateState extends State<ImageUpdate> {
     });
   }
 
+  addFile()async{
+    String name = DateTime.now().isUtc.toString();
+    var postImage = FirebaseStorage.instance.ref().child(name);
+    UploadTask task = postImage.putFile(UploadImage!);
+    TaskSnapshot snapshot = await task;
+    URL = await snapshot.ref.getDownloadURL();
+  }
 
+  var addImageFirestore = FirebaseFirestore.instance.collection('postShare');
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +47,12 @@ class _ImageUpdateState extends State<ImageUpdate> {
         child: Column(
           children: [
             TextFormField(
-              decoration: InputDecoration(
+              controller: _searchPostController,
+              decoration: const InputDecoration(
                 hintText: "What's Happening?"
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50.0,
             ),
             Container(
@@ -54,14 +68,22 @@ class _ImageUpdateState extends State<ImageUpdate> {
               child: InkWell(
                 onTap: (){
                   getImage();
-                },
+                  }
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50.0,
             ),
             TwitterButton(
-                onTap: (){}, title: 'Post Upload'),
+                onTap: ()async{
+                  await addFile();
+                  addImageFirestore.add({
+                   "postShare" : _searchPostController.text.toString(),
+                    "imageUrl" : URL.toString(),
+                  });
+                  Navigator.pop(context);
+                },
+              title: 'Post Upload'),
           ],
         ),
       ),
