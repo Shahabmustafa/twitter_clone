@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:twitter_clone/Provider/favourite.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
 import 'package:twitter_clone/Widgets/post_share.dart';
 
@@ -22,6 +24,7 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
   bool _share = false;
   @override
   Widget build(BuildContext context) {
+   // final _provider = Provider.of<Favourite>(context,listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
