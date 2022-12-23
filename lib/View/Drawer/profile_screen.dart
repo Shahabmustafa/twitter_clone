@@ -15,10 +15,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _auth = FirebaseAuth.instance.currentUser;
-  bool _iscomment = false;
-  bool _islike = false;
-  bool _retwitte = false;
-  bool _share = false;
+  ValueNotifier<bool> _comment = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _like = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _isretwitte = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _isshare = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,38 +155,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  _iscomment = true;
-                                });
-                              },
-                              icon: Icon(_iscomment ? Icons.comment : Icons.comment_rounded),color: _iscomment ? AppColor.BlueColor :AppColor.BlackColor,
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  _retwitte = true;
-                                });
-                              },
-                              icon: Icon(_retwitte ? Icons.cloud : Icons.cloud_queue_outlined),color: _retwitte ? Colors.green :AppColor.BlackColor,
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  _islike = true;
-                                });
-                              },
-                              icon: Icon(_islike ? Icons.favorite : Icons.favorite_border_rounded),color: _islike ? Colors.red : AppColor.BlackColor,
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  _share = true;
-                                });
-                              },
-                              icon: Icon(_share ? Icons.download : Icons.download_done_outlined),color: _share ? AppColor.BlueColor : AppColor.BlackColor,
-                            ),
+                            ValueListenableBuilder(
+                                valueListenable: _comment,
+                                builder: (context,value,child){
+                                  return IconButton(
+                                    onPressed: (){
+                                      _comment.value =! _comment.value;
+                                    },
+                                    icon: Icon(_comment.value ? Icons.messenger_outline : Icons.message,color: Colors.blue,),
+                                  );
+                                }),
+                            ValueListenableBuilder(
+                                valueListenable: _like,
+                                builder: (context,child,value){
+                                  return IconButton(
+                                    onPressed: (){
+                                      _like.value =! _like.value;
+                                    },
+                                    icon: Icon(_like.value ? Icons.favorite_border_rounded : Icons.favorite,color: Colors.red,),
+                                  );
+                                }),
+                            ValueListenableBuilder(
+                                valueListenable: _isretwitte,
+                                builder: (context,child,value){
+                                  return IconButton(
+                                    onPressed: (){
+                                      _isretwitte.value =! _isretwitte.value;
+                                    },
+                                    icon: Icon(_isretwitte.value ? Icons.cloud_queue_outlined : Icons.cloud,color: Colors.green,),
+                                  );
+                                }),
+                            ValueListenableBuilder(
+                                valueListenable: _isshare,
+                                builder: (context,child,value){
+                                  return IconButton(
+                                    onPressed: (){
+                                      _isshare.value =! _isshare.value;
+                                    },
+                                    icon: Icon(_isshare.value ? Icons.upload_outlined : Icons.upload,color: Colors.blue,),
+                                  );
+                                }),
                           ],
                         ),
                       ],

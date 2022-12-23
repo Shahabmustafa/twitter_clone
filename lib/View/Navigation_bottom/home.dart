@@ -1,9 +1,7 @@
-import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:twitter_clone/Provider/favourite.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
 import 'package:twitter_clone/Widgets/post_share.dart';
 
@@ -18,100 +16,128 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
   // var time = DateTime.now();
 
   final _auth = FirebaseAuth.instance.currentUser;
-  bool _iscomment = false;
-  bool _islike = false;
-  bool _retwitte = false;
-  bool _share = false;
+  ValueNotifier<bool> _iscomment = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _islike = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _retwitte = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _share = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
-   // final _provider = Provider.of<Favourite>(context,listen: false);
+    print('build');
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-              child: PostShare(),
-            ),
-            // for(int i = 0; i<6; i++)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage("${_auth!.photoURL}"),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('postShare').snapshots(),
+        builder: (context,AsyncSnapshot<QuerySnapshot>snapshot){
+          if(snapshot.hasData){
+            return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context,index){
+                  var data = snapshot.data!.docs[index];
+                  return Column(
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+                        child: PostShare(),
                       ),
-                      const SizedBox(
-                        width: 5.0,
-                      ),
-                      Row(
-                        children:[Text("${_auth!.displayName}",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0,),),
-                          const Icon(Icons.verified,color: AppColor.BlueColor,),
-                            ],
-                          ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.0),
-                          child: Text('airline never ever flying with them again'),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        // child: Shimmer.fromColors(
+                        //   baseColor: Colors.white.withOpacity(0.6),
+                        //   highlightColor: Colors.grey.withOpacity(0.25),
+                          child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage("${_auth!.photoURL}"),
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Row(
+                                  children:[Text("${_auth!.displayName}",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0,),),
+                                    const Icon(Icons.verified,color: AppColor.BlueColor,),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 40.0),
+                                  child: Text(data['postShare']),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 350.0,
+                              color: Colors.blue,
+                              child: Image.network('${data['imageUrl']}',fit: BoxFit.cover,),
+                            ),
+                              SizedBox(
+                              height: 10.0,
+                            ),
+                              Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ValueListenableBuilder(
+                                    valueListenable: _iscomment,
+                                    builder: (context,value,child){
+                                      return IconButton(
+                                        onPressed: (){
+                                          _iscomment.value =! _iscomment.value;
+                                        },
+                                        icon: Icon(_iscomment.value ? Icons.messenger_outline : Icons.message,color: Colors.blue,),
+                                      );
+                                    }),
+                                ValueListenableBuilder(
+                                    valueListenable: _islike,
+                                    builder: (context,child,value){
+                                      return IconButton(
+                                        onPressed: (){
+                                          _islike.value =! _islike.value;
+                                        },
+                                        icon: Icon(_islike.value ? Icons.favorite_border_rounded : Icons.favorite,color: Colors.red,),
+                                      );
+                                    }),
+                                ValueListenableBuilder(
+                                    valueListenable: _retwitte,
+                                    builder: (context,child,value){
+                                      return IconButton(
+                                        onPressed: (){
+                                          _retwitte.value =! _retwitte.value;
+                                        },
+                                        icon: Icon(_retwitte.value ? Icons.cloud_queue_outlined : Icons.cloud,color: Colors.green,),
+                                      );
+                                    }),
+                                ValueListenableBuilder(
+                                    valueListenable: _share,
+                                    builder: (context,child,value){
+                                      return IconButton(
+                                        onPressed: (){
+                                          _share.value =! _share.value;
+                                        },
+                                        icon: Icon(_share.value ? Icons.upload_outlined : Icons.upload,color: Colors.blue,),
+                                      );
+                                    }),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 350.0,
-                    color: Colors.blue,
-                    child: Image.asset('images/twitter.png'),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _iscomment = true;
-                            });
-                          },
-                          icon: Icon(_iscomment ? Icons.comment : Icons.comment_rounded),color: _iscomment ? AppColor.BlueColor :AppColor.BlackColor,
-                      ),
-                      IconButton(
-                        onPressed: (){
-                          setState(() {
-                            _retwitte = true;
-                          });
-                        },
-                        icon: Icon(_retwitte ? Icons.cloud : Icons.cloud_queue_outlined),color: _retwitte ? Colors.green :AppColor.BlackColor,
-                      ),
-                      IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _islike = true;
-                            });
-                          },
-                          icon: Icon(_islike ? Icons.favorite : Icons.favorite_border_rounded),color: _islike ? Colors.red : AppColor.BlackColor,
-                      ),
-                      IconButton(
-                        onPressed: (){
-                          setState(() {
-                            _share = true;
-                          });
-                        },
-                        icon: Icon(_share ? Icons.download : Icons.download_done_outlined),color: _share ? AppColor.BlueColor : AppColor.BlackColor,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                  );
+                },
+            );
+          }
+          else{
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

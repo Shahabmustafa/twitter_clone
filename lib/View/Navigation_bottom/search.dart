@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SearchNavigationBottom extends StatefulWidget {
@@ -10,6 +11,12 @@ class SearchNavigationBottom extends StatefulWidget {
 class _SearchNavigationBottomState extends State<SearchNavigationBottom> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body:Column(
+        children: [
+
+        ],
+      )
+    );
   }
 }

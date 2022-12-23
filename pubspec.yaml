@@ -46,6 +46,7 @@ dependencies:
   cloud_firestore: ^4.2.0
   provider: ^6.0.5
   firebase_storage: ^11.0.8
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

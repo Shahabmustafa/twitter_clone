@@ -19,15 +19,15 @@ class _ImageUpdateState extends State<ImageUpdate> {
   String URL = "";
 
   getImage()async{
-    var image = await _imagePicker.pickImage(source: ImageSource.camera);
+    var image = await _imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       UploadImage = File(image!.path);
     });
   }
 
   addFile()async{
-    String name = DateTime.now().isUtc.toString();
-    var postImage = FirebaseStorage.instance.ref().child(name);
+    String name = DateTime.now().microsecondsSinceEpoch.toString();
+    var postImage = FirebaseStorage.instance.ref().child(name).child('jpg');
     UploadTask task = postImage.putFile(UploadImage!);
     TaskSnapshot snapshot = await task;
     URL = await snapshot.ref.getDownloadURL();
