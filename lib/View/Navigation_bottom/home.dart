@@ -24,120 +24,121 @@ class _HomeNavigationBottomState extends State<HomeNavigationBottom> {
   Widget build(BuildContext context) {
     print('build');
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('postShare').snapshots(),
-        builder: (context,AsyncSnapshot<QuerySnapshot>snapshot){
-          if(snapshot.hasData){
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context,index){
-                  var data = snapshot.data!.docs[index];
-                  return Column(
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-                        child: PostShare(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        // child: Shimmer.fromColors(
-                        //   baseColor: Colors.white.withOpacity(0.6),
-                        //   highlightColor: Colors.grey.withOpacity(0.25),
-                          child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage("${_auth!.photoURL}"),
-                                ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Row(
-                                  children:[Text("${_auth!.displayName}",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0,),),
-                                    const Icon(Icons.verified,color: AppColor.BlueColor,),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 40.0),
-                                  child: Text(data['postShare']),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 350.0,
-                              color: Colors.blue,
-                              child: Image.network('${data['imageUrl']}',fit: BoxFit.cover,),
-                            ),
-                              SizedBox(
-                              height: 10.0,
-                            ),
-                              Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ValueListenableBuilder(
-                                    valueListenable: _iscomment,
-                                    builder: (context,value,child){
-                                      return IconButton(
-                                        onPressed: (){
-                                          _iscomment.value =! _iscomment.value;
-                                        },
-                                        icon: Icon(_iscomment.value ? Icons.messenger_outline : Icons.message,color: Colors.blue,),
-                                      );
-                                    }),
-                                ValueListenableBuilder(
-                                    valueListenable: _islike,
-                                    builder: (context,child,value){
-                                      return IconButton(
-                                        onPressed: (){
-                                          _islike.value =! _islike.value;
-                                        },
-                                        icon: Icon(_islike.value ? Icons.favorite_border_rounded : Icons.favorite,color: Colors.red,),
-                                      );
-                                    }),
-                                ValueListenableBuilder(
-                                    valueListenable: _retwitte,
-                                    builder: (context,child,value){
-                                      return IconButton(
-                                        onPressed: (){
-                                          _retwitte.value =! _retwitte.value;
-                                        },
-                                        icon: Icon(_retwitte.value ? Icons.cloud_queue_outlined : Icons.cloud,color: Colors.green,),
-                                      );
-                                    }),
-                                ValueListenableBuilder(
-                                    valueListenable: _share,
-                                    builder: (context,child,value){
-                                      return IconButton(
-                                        onPressed: (){
-                                          _share.value =! _share.value;
-                                        },
-                                        icon: Icon(_share.value ? Icons.upload_outlined : Icons.upload,color: Colors.blue,),
-                                      );
-                                    }),
-                              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+              child: PostShare(),
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('postShare').snapshots(),
+              builder: (context,AsyncSnapshot<QuerySnapshot>snapshot){
+                if(snapshot.hasData){
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context,index){
+                        var data = snapshot.data!.docs[index];
+                        return Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage("${_auth!.photoURL}"),
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Row(
+                                        children:[Text("${_auth!.displayName}",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0,),),
+                                          const Icon(Icons.verified,color: AppColor.BlueColor,),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 40.0),
+                                        child: Text(data['postShare']),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                    Container(
+                                      width: double.infinity,
+                                      height: 350.0,
+                                      color: Colors.blue,
+                                        child: Image.network('${data['imageUrl']}',fit: BoxFit.cover,)),
+                                    const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                    Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ValueListenableBuilder(
+                                          valueListenable: _iscomment,
+                                          builder: (context,value,child){
+                                            return IconButton(
+                                              onPressed: (){
+                                                _iscomment.value =! _iscomment.value;
+                                              },
+                                              icon: Icon(_iscomment.value ? Icons.messenger_outline : Icons.message,color: Colors.blue,),
+                                            );
+                                          }),
+                                      ValueListenableBuilder(
+                                          valueListenable: _islike,
+                                          builder: (context,child,value){
+                                            return IconButton(
+                                              onPressed: (){
+                                                _islike.value =! _islike.value;
+                                              },
+                                              icon: Icon(_islike.value ? Icons.favorite_border_rounded : Icons.favorite,color: Colors.red,),
+                                            );
+                                          }),
+                                      ValueListenableBuilder(
+                                          valueListenable: _retwitte,
+                                          builder: (context,child,value){
+                                            return IconButton(
+                                              onPressed: (){
+                                                _retwitte.value =! _retwitte.value;
+                                              },
+                                              icon: Icon(_retwitte.value ? Icons.cloud_queue_outlined : Icons.cloud,color: Colors.green,),
+                                            );
+                                          }),
+                                      ValueListenableBuilder(
+                                          valueListenable: _share,
+                                          builder: (context,child,value){
+                                            return IconButton(
+                                              onPressed: (){
+                                                _share.value =! _share.value;
+                                              },
+                                              icon: Icon(_share.value ? Icons.upload_outlined : Icons.upload,color: Colors.blue,),
+                                            );
+                                          }),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
+                        );
+                      },
                   );
-                },
-            );
-          }
-          else{
-            return CircularProgressIndicator();
-          }
-        },
+                }else{
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
