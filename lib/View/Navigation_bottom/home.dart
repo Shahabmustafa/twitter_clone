@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:twitter_clone/Utls/app_colors.dart';
 import 'package:twitter_clone/Widgets/post_share.dart';
 
